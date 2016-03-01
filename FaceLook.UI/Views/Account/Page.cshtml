@@ -1,0 +1,412 @@
+﻿@using FaceLook.DAL.Entities
+@using Microsoft.Web.Helpers
+@model FaceLook.UI.Models.UserViewModel
+@{
+    ViewBag.Title = Model.User.FirstName + " " + Model.User.LastName;
+    Post post = new Post();
+    Comment comment = new Comment();
+}
+
+<script>
+    $(window).scroll(function() {
+        $(".slideanim").each(function() {
+            var pos = $(this).offset().top;
+
+            var winTop = $(window).scrollTop();
+            if (pos < winTop + 600) {
+                $(this).addClass("slide");
+            }
+        });
+    });
+</script>
+
+<div class="container">
+<div class="row well">
+    <div class="col-md-4">
+        <h2>@Model.User.FirstName @Model.User.MiddleName @Model.User.LastName</h2>
+        @if (Model.IsUserCurrent)
+        {
+            <h4>
+                (this is you)
+                <a href="@Url.Action("Edit")" title="Edit your profile">
+                    <span class="glyphicon glyphicon-pencil"></span>
+                </a>
+            </h4>
+        }
+        email: @Model.User.Email
+        <br/>
+        tel: @Model.User.Phone
+
+        @if (!Model.IsUserCurrent)
+        {
+            if (Model.CurrentUser.Friends.Contains(Model.User))
+            {
+                using (Html.BeginForm("Remove", "Friends", FormMethod.Post))
+                {
+                    <input type="hidden" value="@Model.User.NickName" name="login" id="login"/>
+                    <input type="submit" class="btn btn-warning" value="Remove from friends"/>
+                }
+            }
+            if (Model.CurrentUser.FriendsToConfirm.Any(f => f.Login == Model.User.NickName))
+            {
+                using (Html.BeginForm("Confirm", "Friends", FormMethod.Post))
+                {
+                    <input type="hidden" value="@Model.User.NickName" name="login" id="login"/>
+                    <input type="submit" class="btn btn-success" value="Confirm friendship"/>
+                }
+                using (Html.BeginForm("Deny", "Friends", FormMethod.Post))
+                {
+                    <input type="hidden" value="@Model.User.NickName" name="login" id="login"/>
+                    <input type="submit" class="btn btn-warning" value="Deny friendship"/>
+                }
+            }
+            if (!Model.CurrentUser.Friends.Contains(Model.User))
+            {
+                using (Html.BeginForm("Add", "Friends", FormMethod.Post))
+                {
+                    <input type="hidden" value="@Model.User.NickName" name="login" id="login"/>
+                    <input type="submit" class="btn btn-success" value="Add to friends"/>
+                }
+            }
+
+            @Html.RouteLink("Write message", "ConversationRoute", new {login = Model.User.NickName})
+        }
+
+    </div>
+
+    <div class="col-md-4">
+        <div style="text-align: center">
+            @if (Model.User.Photo != null)
+            {
+                <div>
+                    <img class="img-circle" width="250" height="250" src="@Url.Action("GetImage", "Account",
+                                                                              new {login = Model.User.NickName})"/>
+                </div>
+            }
+            else
+            {
+                <div>
+                    <img class="img-circle" width="250" height="250" src="~/Content/Photos/default.jpg"/>
+                </div>
+            }
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        @if (!string.IsNullOrEmpty(Model.User.Information))
+        {
+            <h4>About me:</h4>
+            <p>
+                @Model.User.Information
+            </p>
+        }
+        <div>
+            @if (Model.User.Friends != null)
+            {
+                <div class="row">
+                    @foreach (User u in Model.User.Friends)
+                    {
+                        <div class="col-md-3">
+                            @if (u.Photo != null)
+                            {
+                                <div>
+                                    <a href="@Url.RouteUrl("PageItselfRoute", new {login = u.NickName})">
+                                        <img class="img-circle" alt="@u.FirstName" width="80" height="80" src="@Url.Action("GetImage", "Account",
+                                                                                                                   new {login = u.NickName})"/>
+                                    </a>
+                                </div>
+                            }
+                            else
+                            {
+                                <div>
+                                    <a href="@Url.RouteUrl("PageItselfRoute", new {login = u.NickName})">
+                                        <img class="img-circle" alt="@u.FirstName" width="80" height="80" src="~/Content/Photos/default.jpg"/>
+                                    </a>
+                                </div>
+                            }
+                        </div>
+                    }
+                </div>
+                <div>
+                    @Html.RouteLink("View user's friends", "FriendsRoute", new {login = Model.User.NickName}, new {@class = "btn btn-link", style = "margin:5px"})
+                </div>
+            }
+            else
+            {
+                <h4>The user has no friends yet</h4>
+            }
+        </div>
+    </div>
+</div>
+
+
+<!--Form to write post-->
+<div class="container">
+    <div class="row well">
+        @using (Html.BeginForm("Publish", "Account", FormMethod.Post,
+            new {enctype = "multipart/form-data"}))
+        {
+            <input type="hidden" value="@Model.User.NickName" name="login" id="login"/>
+            <div class="form-horizontal">
+                <div class="form-group">
+                    <div class="col-sm-3">
+                        @Html.TextBoxFor(m => post.Tag, new
+                        {
+                            placeholder = "#Tag",
+                            @class = "form-control",
+                            style = "-moz-min-width:100%;-ms-min-width:100%;-o-min-width:100%;-webkit-min-width:100%;min-width:100%;margin:3px"
+                        })
+                        @Html.TextBoxFor(m => post.Position, new
+                        {
+                            placeholder = "Position",
+                            @class = "form-control",
+                            style = "-moz-min-width:100%;-ms-min-width:100%;-o-min-width:100%;-webkit-min-width:100%;min-width:100%;margin:3px"
+                        })
+                    </div>
+                    <div class="col-sm-6">
+                        @Html.TextAreaFor(m => post.Text, new
+                        {
+                            placeholder = "Write a post..",
+                            @class = "form-control",
+                            cols = "500",
+                            rows = "3",
+                            style = "-moz-min-width:100%;-ms-min-width:100%;-o-min-width:100%;-webkit-min-width:100%;min-width:100%;margin:3px"
+                        })
+                    </div>
+                    <div style="position: relative;" class="col-sm-3">
+                        <a class="btn btn-info btn-block" style="margin: 3px" href="javascript:;">
+                            Pin photos
+                            <input type="file" name="Images" multiple="multiple" size="40" accept="image/*"
+                                   style="background-color: transparent; color: transparent; filter: alpha(opacity=0); left: 0; opacity: 0; position: absolute; top: 0; z-index: 2;"
+                                   onchange='$("#upload-File-info").html($(this).val());'/>
+                        </a>
+                        <span class="label label-info" id="upload-file-info"></span>
+                        <input class="form-control btn btn-block btn-success"
+                               style="-moz-min-width: 100%; -ms-min-width: 100%; -o-min-width: 100%; -webkit-min-width: 100%; margin: 3px; min-width: 100%;"
+                               type="submit" value="Publish"/>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<!--Profile's wall with posts-->
+<div class="row">
+<div class="container">
+@if (Model.User.Posts != null)
+{
+    foreach (Post p in Model.User.Posts)
+    {
+        <!--Pop-up to see users liked the post-->
+        <div class="modal fade" id="modal-container-764577" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                            <span class="glyphicon glyphicon-remove"></span>
+                        </button>
+                        <h4 class="modal-title" id="myModalLabel">
+                            Users who stared the post
+                        </h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            @foreach (var u in p.UsersLikedId)
+                            {
+                                <div class="col-sm-3 text-center">
+                                    @if (u.Photo != null)
+                                    {
+                                        <div>
+                                            <a href="@Url.RouteUrl("PageItselfRoute", new {login = u.NickName})">
+                                                <img class="img-circle" alt="@u.FirstName" width="100" height="100" src="@Url.Action("GetImage", "Account",
+                                                                                                                             new {login = u.NickName})"/>
+                                            </a>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div>
+                                            <a href="@Url.RouteUrl("PageItselfRoute", new {login = u.NickName})">
+                                                <img class="img-circle" alt="@u.FirstName" width="100" height="100" src="~/Content/Photos/default.jpg"/>
+                                            </a>
+                                        </div>
+                                    }
+                                    <a href="@Url.RouteUrl("PageItselfRoute", new {login = u.NickName})">
+                                        @u.FirstName @u.LastName
+                                    </a>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="reset" class="btn btn-default" data-dismiss="modal">
+                            Close
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row well slideanim">
+            <!--User's photo-->
+            <div class="col-md-2">
+                <div class="text-left">
+                    @if (p.UserPosted.Photo != null)
+                    {
+                        <div>
+                            <a href="@Url.RouteUrl("PageItselfRoute", new {login = p.UserPosted.NickName})">
+                                <img class="img-circle" alt="@p.UserPosted.FirstName" width="150" height="150" src="@Url.Action("GetImage", "Account",
+                                                                                                                        new {login = p.UserPosted.NickName})"/>
+                            </a>
+                        </div>
+                    }
+                    else
+                    {
+                        <div>
+                            <a href="@Url.RouteUrl("PageItselfRoute", new {login = p.UserPosted.NickName})">
+                                <img class="img-circle" alt="@p.UserPosted.FirstName" width="150" height="150" src="~/Content/Photos/default.jpg"/>
+                            </a>
+                        </div>
+                    }
+                </div>
+                <br/>
+                @if (p.UsersLikedId.Count <= 0)
+                {
+                    <p class="text-muted">
+                        No one stared the post yet:(
+                    </p>
+                }
+                else
+                {
+                    <p class="text-muted">
+                        <a id="modal-764577" href="#modal-container-764577" role="button" class="btn" data-toggle="modal">
+                            @p.UsersLikedId.Count users stared the post
+                        </a>
+                    </p>
+                }
+                <label class="label label-info">
+                    Posted on @p.TimePosted
+                </label>
+            </div>
+
+            <!--Post text & tag-->
+            <div class="col-md-8">
+                <p style="font-size: 2em">
+                    @p.Text
+                </p>
+                <a href="@Url.Action("Index", "Search", new {search = p.Tag})">
+                    <h3 class="text-muted">#@p.Tag</h3>
+                </a>
+                <div class="text-center">
+                    @foreach (var img in p.PostAdditions)
+                    {
+                        if (img.MimeType.StartsWith("image/"))
+                        {
+                            <div class="slideanim">
+                                <img src="data:@img.MimeType;base64,@Html.Raw(Convert.ToBase64String(img.Data))" style="height: auto; margin: 3px; width: 100%;"/>
+                            </div>
+                        }
+                    }
+                </div>
+                <div class="text-center hidden-xs hidden-sm slideanim" style="margin-bottom: 20px">
+                    @Maps.GetGoogleHtml(p.Position, width: "705", height: "250", showDirectionsLink: false)
+                </div>
+            </div>
+
+            <!--Post controls-->
+            <div class="col-md-2">
+                <div class="btn-group btn-group-vertical pull-right">
+                    <a href="@Url.RouteUrl("PageItselfRoute", new {login = p.UserPosted.NickName})" class="btn btn-success">
+                        @p.UserPosted.FirstName @p.UserPosted.LastName
+                    </a>
+                    @using (Html.BeginForm("Like", "Account", FormMethod.Post))
+                    {
+                        <input type="hidden" value="@Model.User.NickName" name="login" id="login"/>
+                        <input type="hidden" value="@p.Id" name="postId" id="postId"/>
+                        <button type="submit" title="Star it!" class="btn btn-success">
+                            @p.UsersLikedId.Count
+                            <span class="glyphicon glyphicon-star"></span>
+                        </button>
+                    }
+                    @if (Model.IsUserCurrent || Model.CurrentUser == p.UserPosted)
+                    {
+                        using (Html.BeginForm("RemovePost", "Account", FormMethod.Post))
+                        {
+                            <input type="hidden" value="@Model.User.NickName" name="login" id="login"/>
+                            <input type="hidden" value="@p.Id" name="postId" id="postId"/>
+                            <button type="submit" title="Remove post" class="btn btn-warning">
+                                <span class="glyphicon glyphicon-remove"></span>
+                            </button>
+                        }
+                    }
+                </div>
+            </div>
+
+            <!--Form to comment post-->
+            @using (Html.BeginForm("Comment", "Account", FormMethod.Post))
+            {
+                <input type="hidden" value="@Model.User.NickName" name="login" id="login"/>
+                <input type="hidden" value="@p.Id" name="postId" id="postId"/>
+                <div class="row">
+                    <div class="col-sm-8 col-sm-offset-2">
+                        @Html.TextAreaFor(m => comment.Text,
+                            new {style = "-moz-min-width:100%;-ms-min-width:100%;-o-min-width:100%;-webkit-min-width:100%;min-width:100%;margin:3px", rows = "2", @class = "form-control"})
+                        <div class="pull-right">
+                            <input type="submit" value="Comment" class="btn btn-success"/>
+                        </div>
+                    </div>
+                </div>
+            }
+
+            <!--Comments area-->
+            @if (p.Comments != null)
+            {
+                <div class="container">
+                    @foreach (var cmnt in p.Comments)
+                    {
+                        <div class="row well-sm slideanim">
+                            <div class="col-md-2 col-md-offset-2 text-right">
+                                @if (p.UserPosted.Photo != null)
+                                {
+                                    <div>
+                                        <a href="@Url.RouteUrl("PageItselfRoute", new {login = cmnt.CommentOwner.NickName})">
+                                            <img class="img-circle" alt="@cmnt.CommentOwner.FirstName" width="100" height="100" src="@Url.Action("GetImage", "Account",
+                                                                                                                                         new {login = cmnt.CommentOwner.NickName})"/>
+                                        </a>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div>
+                                        <a href="@Url.RouteUrl("PageItselfRoute", new {login = cmnt.CommentOwner.NickName})">
+                                            <img class="img-circle" alt="@cmnt.CommentOwner.FirstName" width="100" height="100" src="~/Content/Photos/default.jpg"/>
+                                        </a>
+                                    </div>
+                                }
+                            </div>
+                            <div class="col-md-8">
+                                <a href="@Url.RouteUrl("PageItselfRoute", new {login = cmnt.CommentOwner.NickName})">
+                                    @cmnt.CommentOwner.FirstName @cmnt.CommentOwner.LastName
+                                </a>
+                                <p>
+                                    @cmnt.Text
+                                </p>
+                                <label class="label label-info">
+                                    @cmnt.TimeCommented
+                                </label>
+                            </div>
+                        </div>
+                    }
+                </div>
+            }
+        </div>
+    }
+}
+else
+{
+    <h3 class="text-center">The user has no posts yet</h3>
+}
+</div>
+</div>
+</div>

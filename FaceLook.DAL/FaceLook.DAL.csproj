@@ -1,0 +1,221 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{72DDF40C-2AF1-4909-9C82-D2C43602B4B3}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>FaceLook.DAL</RootNamespace>
+    <AssemblyName>FaceLook.DAL</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.Helpers.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.2.3\lib\net45\System.Web.Mvc.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Razor.3.2.3\lib\net45\System.Web.Razor.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Abstract\IUserRepository.cs" />
+    <Compile Include="Abstract\ITicketRepository.cs" />
+    <Compile Include="Concrete\EfDbContext.cs" />
+    <Compile Include="Concrete\TicketRepository.cs" />
+    <Compile Include="Concrete\UserRepository.cs" />
+    <Compile Include="Entities\AuthenticationTicket.cs" />
+    <Compile Include="Entities\Comment.cs" />
+    <Compile Include="Entities\Conversation.cs" />
+    <Compile Include="Entities\FriendshipRequest.cs" />
+    <Compile Include="Entities\Message.cs" />
+    <Compile Include="Entities\Post.cs" />
+    <Compile Include="Entities\PostAddition.cs" />
+    <Compile Include="Entities\User.cs" />
+    <Compile Include="Migrations\201601301310127_InitialCreate.cs" />
+    <Compile Include="Migrations\201601301310127_InitialCreate.Designer.cs">
+      <DependentUpon>201601301310127_InitialCreate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201601301346451_ConversationAdded.cs" />
+    <Compile Include="Migrations\201601301346451_ConversationAdded.Designer.cs">
+      <DependentUpon>201601301346451_ConversationAdded.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201601301416270_PostCommentsAndLikesAdded.cs" />
+    <Compile Include="Migrations\201601301416270_PostCommentsAndLikesAdded.Designer.cs">
+      <DependentUpon>201601301416270_PostCommentsAndLikesAdded.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201601301623230_LikesAddedToPosts.cs" />
+    <Compile Include="Migrations\201601301623230_LikesAddedToPosts.Designer.cs">
+      <DependentUpon>201601301623230_LikesAddedToPosts.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201601301858357_SecurityDBAdded.cs" />
+    <Compile Include="Migrations\201601301858357_SecurityDBAdded.Designer.cs">
+      <DependentUpon>201601301858357_SecurityDBAdded.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201601311407178_SecurityChanges.cs" />
+    <Compile Include="Migrations\201601311407178_SecurityChanges.Designer.cs">
+      <DependentUpon>201601311407178_SecurityChanges.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201601311834184_AdditionalChanges.cs" />
+    <Compile Include="Migrations\201601311834184_AdditionalChanges.Designer.cs">
+      <DependentUpon>201601311834184_AdditionalChanges.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201602111554211_Changes.cs" />
+    <Compile Include="Migrations\201602111554211_Changes.Designer.cs">
+      <DependentUpon>201602111554211_Changes.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201602151627165_LazyLoadAdded.cs" />
+    <Compile Include="Migrations\201602151627165_LazyLoadAdded.Designer.cs">
+      <DependentUpon>201602151627165_LazyLoadAdded.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201602151636219_AllToLazy.cs" />
+    <Compile Include="Migrations\201602151636219_AllToLazy.Designer.cs">
+      <DependentUpon>201602151636219_AllToLazy.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201602161242244_Fixedshit.cs" />
+    <Compile Include="Migrations\201602161242244_Fixedshit.Designer.cs">
+      <DependentUpon>201602161242244_Fixedshit.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201602172034234_Many_To_Many_Problem_Resolver_Added.cs" />
+    <Compile Include="Migrations\201602172034234_Many_To_Many_Problem_Resolver_Added.Designer.cs">
+      <DependentUpon>201602172034234_Many_To_Many_Problem_Resolver_Added.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201602172111067_DB_Dropped.cs" />
+    <Compile Include="Migrations\201602172111067_DB_Dropped.Designer.cs">
+      <DependentUpon>201602172111067_DB_Dropped.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201602172149429_Resolver_Removed.cs" />
+    <Compile Include="Migrations\201602172149429_Resolver_Removed.Designer.cs">
+      <DependentUpon>201602172149429_Resolver_Removed.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201602172202222_Model_fixed.cs" />
+    <Compile Include="Migrations\201602172202222_Model_fixed.Designer.cs">
+      <DependentUpon>201602172202222_Model_fixed.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201602172257056_Conversations_Model_Changed.cs" />
+    <Compile Include="Migrations\201602172257056_Conversations_Model_Changed.Designer.cs">
+      <DependentUpon>201602172257056_Conversations_Model_Changed.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201601301310127_InitialCreate.resx">
+      <DependentUpon>201601301310127_InitialCreate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201601301346451_ConversationAdded.resx">
+      <DependentUpon>201601301346451_ConversationAdded.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201601301416270_PostCommentsAndLikesAdded.resx">
+      <DependentUpon>201601301416270_PostCommentsAndLikesAdded.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201601301623230_LikesAddedToPosts.resx">
+      <DependentUpon>201601301623230_LikesAddedToPosts.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201601301858357_SecurityDBAdded.resx">
+      <DependentUpon>201601301858357_SecurityDBAdded.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201601311407178_SecurityChanges.resx">
+      <DependentUpon>201601311407178_SecurityChanges.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201601311834184_AdditionalChanges.resx">
+      <DependentUpon>201601311834184_AdditionalChanges.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201602111554211_Changes.resx">
+      <DependentUpon>201602111554211_Changes.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201602151627165_LazyLoadAdded.resx">
+      <DependentUpon>201602151627165_LazyLoadAdded.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201602151636219_AllToLazy.resx">
+      <DependentUpon>201602151636219_AllToLazy.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201602161242244_Fixedshit.resx">
+      <DependentUpon>201602161242244_Fixedshit.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201602172034234_Many_To_Many_Problem_Resolver_Added.resx">
+      <DependentUpon>201602172034234_Many_To_Many_Problem_Resolver_Added.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201602172111067_DB_Dropped.resx">
+      <DependentUpon>201602172111067_DB_Dropped.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201602172149429_Resolver_Removed.resx">
+      <DependentUpon>201602172149429_Resolver_Removed.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201602172202222_Model_fixed.resx">
+      <DependentUpon>201602172202222_Model_fixed.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201602172257056_Conversations_Model_Changed.resx">
+      <DependentUpon>201602172257056_Conversations_Model_Changed.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

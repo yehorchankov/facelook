@@ -1,0 +1,133 @@
+﻿@model FaceLook.UI.Models.RegistartionViewModel
+
+@{
+    ViewBag.Title = "Registrate";
+    Layout = "~/Views/Shared/_LoginLayout.cshtml";
+}
+
+
+<div class="container">
+    <div class="row">
+        @using (Html.BeginForm("Registrate", "Login", FormMethod.Post,
+            new {enctype = "multipart/form-data", name = "RegistrationForm", id = "RegistrationForm"}))
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="form-horizontal col-md-7 col-md-offset-3">
+                <div class="form-group">
+                    <h3>Personal information</h3>
+                    <hr/>
+                    @Html.ValidationSummary(true, "", new {@class = "text-danger"})
+                    @Html.HiddenFor(model => model.User.NickName)
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.User.FirstName, new {@class = "control-label col-md-2"})
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.User.FirstName, new {htmlAttributes = new {@class = "form-control"}})
+                            @Html.ValidationMessageFor(model => model.User.FirstName, "", new {@class = "text-danger"})
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.User.LastName, new {@class = "control-label col-md-2"})
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.User.LastName, new {htmlAttributes = new {@class = "form-control"}})
+                            @Html.ValidationMessageFor(model => model.User.LastName, "", new {@class = "text-danger"})
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.User.BirthDate, new {@class = "control-label col-md-2"})
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.User.BirthDate, new {htmlAttributes = new {@class = "form-control", type = "date"}})
+                            @Html.ValidationMessageFor(model => model.User.BirthDate, "", new {@class = "text-danger"})
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.User.Phone, new {@class = "control-label col-md-2"})
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.User.Phone, new {htmlAttributes = new {@class = "form-control"}})
+                            @Html.ValidationMessageFor(model => model.User.Phone, "", new {@class = "text-danger"})
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.User.Address, new {@class = "control-label col-md-2"})
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.User.Address, new {htmlAttributes = new {@class = "form-control"}})
+                            @Html.ValidationMessageFor(model => model.User.Address, "", new {@class = "text-danger"})
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.User.Information, new {@class = "control-label col-md-2"})
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.User.Information, new {htmlAttributes = new {@class = "form-control"}})
+                            @Html.ValidationMessageFor(model => model.User.Information, "", new {@class = "text-danger"})
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="form-group">
+                    <h3>Registration credentials</h3>
+                    <hr/>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Login, new {@class = "control-label col-md-2"})
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.Login, new {htmlAttributes = new {@class = "form-control"}})
+                            @Html.ValidationMessageFor(model => model.Login, "", new {@class = "text-danger"})
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-md-2" for="Password">Enter password</label>
+                        <div class="col-md-10">
+                            <input type="password" class="form-control" name="Password" id="Password"/>
+                            @Html.ValidationMessageFor(model => model.Password, "", new {@class = "text-danger"})
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-md-2" for="PasswordToCmp">Once again</label>
+                        <div class="col-md-10">
+                            <input type="password" class="form-control" name="PasswordToCmp" id="PasswordToCmp"/>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.User.Email, new {@class = "control-label col-md-2"})
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.User.Email, new {htmlAttributes = new {@class = "form-control"}})
+                            @Html.ValidationMessageFor(model => model.User.Email, "", new {@class = "text-danger"})
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <h3>Upload your photo</h3><hr/>
+
+                    <div class="form-group">
+                        <div style="position: relative;">
+                            <label class="control-label col-md-2">Image</label>
+                            <a class="btn btn-info" href="javascript:;">
+                                Choose file...
+                                <input type="file" accept="image/*" name="Image" size="40"
+                                       style="background-color: transparent; color: transparent; filter: alpha(opacity=0); left: 0; opacity: 0; position: absolute; top: 0; z-index: 2;"
+                                       onchange='$("#upload-File-info").html($(this).val());'/>
+                            </a>
+                            <span class="label label-info" id="upload-file-info"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" value="Save" class="btn btn-success" style="width: 300px"/>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>

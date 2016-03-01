@@ -1,0 +1,128 @@
+﻿@model FaceLook.UI.Models.SearchResult
+
+@{
+    ViewBag.Title = "Search result";
+}
+
+<div>
+    <div class="container">
+        @if (Model.Users != null && Model.Users.Any())
+        {
+            <h2 class="text-center" style="margin: 30px">People found</h2>
+            foreach (var user in Model.Users)
+            {
+                <div class="row well" style="margin-top: 30px">
+                    <div class="col-sm-3">
+                        <h4>
+                            <a href="@Url.RouteUrl("PageItselfRoute", new {login = user.NickName})">
+                                @user.FirstName @user.LastName
+                            </a>
+                        </h4>
+                    </div>
+                    <div class="col-sm-3">
+                        @if (user.Photo != null)
+                        {
+                            <div>
+                                <a href="@Url.RouteUrl("PageItselfRoute", new {login = user.NickName})">
+                                    <img class="img-circle" alt="@user.FirstName" width="130" height="130" src="@Url.Action("GetImage", "Account",
+                                                                                                                    new {login = user.NickName})"/>
+                                </a>
+                            </div>
+                        }
+                        else
+                        {
+                            <div>
+                                <a href="@Url.RouteUrl("PageItselfRoute", new {login = user.NickName})">
+                                    <img class="img-circle" alt="@user.FirstName" width="130" height="130" src="~/Content/Photos/default.jpg"/>
+                                </a>
+                            </div>
+                        }
+                    </div>
+                    <div class="col-sm-3">
+                        tel: @user.Phone
+                        <br/>
+                        email: @user.Email
+                    </div>
+                    <div class="col-sm-3">
+                        @if (user.NickName != User.Identity.Name)
+                        {
+                            @Html.ActionLink("Write a message", "Index", "Conversation", new {login = user.NickName}, new {@class = "btn btn-info"})
+                        }
+                        @if (Model.CurrentUser.Friends.Contains(user))
+                        {
+                            using (Html.BeginForm("Remove", "Friends", FormMethod.Post))
+                            {
+                                <input type="hidden" value="@user.NickName" name="login" id="login"/>
+                                <input type="submit" class="btn btn-warning" value="Remove from friends"/>
+                            }
+                        }
+                        @if (Model.CurrentUser.FriendsToConfirm.Any(f => f.Login == user.NickName))
+                        {
+                            using (Html.BeginForm("Confirm", "Friends", FormMethod.Post))
+                            {
+                                <input type="hidden" value="@user.NickName" name="login" id="login"/>
+                                <input type="submit" class="btn btn-success" value="Confirm friendship"/>
+                            }
+                        }
+                        @if (!Model.CurrentUser.Friends.Contains(user) && Model.CurrentUser.NickName != user.NickName)
+                        {
+                            using (Html.BeginForm("Add", "Friends", FormMethod.Post))
+                            {
+                                <input type="hidden" value="@user.NickName" name="login" id="login"/>
+                                <input type="submit" class="btn btn-warning" value="Add to friends"/>
+                            }
+                        }
+                        @Html.RouteLink(user.FirstName + "'s friends", "FriendsRoute", new {login = user.NickName}, new {@class = "btn btn-success"})
+                    </div>
+                </div>
+            }
+        }
+        else
+        {
+            <h3 class="text-center text-muted" style="margin: 30px">No users were found by name</h3>
+        }
+    </div>
+    <hr style="margin: 30px"/>
+    <div class="container">
+        @if (Model.Posts != null && Model.Posts.Any())
+        {
+            <h3>Posts found by hashtag</h3>
+            foreach (var post in Model.Posts)
+            {
+                <div class="row well">
+                    <div class="col-sm-4">
+                        @if (post.UserPosted.Photo != null)
+                        {
+                            <div>
+                                <a href="@Url.RouteUrl("PageItselfRoute", new {login = post.UserPosted.NickName})">
+                                    <img class="img-circle" alt="@post.UserPosted.FirstName" width="70" height="70" src="@Url.Action("GetImage", "Account",
+                                                                                                                             new {login = post.UserPosted.NickName})"/>
+                                </a>
+                            </div>
+                        }
+                        else
+                        {
+                            <div>
+                                <a href="@Url.RouteUrl("PageItselfRoute", new {login = post.UserPosted.NickName})">
+                                    <img class="img-circle" alt="@post.UserPosted.FirstName" width="70" height="70" src="~/Content/Photos/default.jpg"/>
+                                </a>
+                            </div>
+                        }
+                    </div>
+                    <div class="col-sm-3">
+                        <a href="@Url.RouteUrl("PageItselfRoute", new {login = post.UserPosted.NickName})">
+                            @post.UserPosted.FirstName @post.UserPosted.LastName
+                        </a>
+                    </div>
+                    <div class="col-sm-5">
+                        @post.Text
+                    </div>
+                </div>
+            }
+        }
+        else
+        {
+            <h3 class="text-center text-muted" style="margin: 30px">No posts were found by tag</h3>
+        }
+    </div>
+</div>

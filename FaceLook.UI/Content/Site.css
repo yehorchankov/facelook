@@ -1,0 +1,176 @@
+﻿body {
+    padding-bottom: 20px;
+    padding-top: 50px;
+}
+
+/* Set padding to keep content from hitting the edges */
+
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+/* Set width on the form input elements since they're 100% wide by default */
+
+input,
+select,
+textarea { max-width: 280px; }
+
+/* Generated online */
+
+.navbar-default {
+    background-color: #595de8;
+    border-color: #2b50c0;
+}
+
+.navbar-default .navbar-brand { color: #e4edf0; }
+
+.navbar-default .navbar-brand:hover,
+.navbar-default .navbar-brand:focus { color: #c4ccf4; }
+
+.navbar-default .navbar-text { color: #e4edf0; }
+
+.navbar-default .navbar-nav > li > a { color: #e4edf0; }
+
+.navbar-default .navbar-nav > li > a:hover,
+.navbar-default .navbar-nav > li > a:focus { color: #c4ccf4; }
+
+.navbar-default .navbar-nav > li > .dropdown-menu { background-color: #9b59b6; }
+
+.navbar-default .navbar-nav > li > .dropdown-menu > li > a { color: #ecf0f1; }
+
+.navbar-default .navbar-nav > li > .dropdown-menu > li > a:hover,
+.navbar-default .navbar-nav > li > .dropdown-menu > li > a:focus {
+    background-color: #8e44ad;
+    color: #ecdbff;
+}
+
+.navbar-default .navbar-nav > li > .dropdown-menu > li > .divider { background-color: #8e44ad; }
+
+.navbar-default .navbar-nav .open .dropdown-menu > .active > a,
+.navbar-default .navbar-nav .open .dropdown-menu > .active > a:hover,
+.navbar-default .navbar-nav .open .dropdown-menu > .active > a:focus {
+    background-color: #8e44ad;
+    color: #ecdbff;
+}
+
+.navbar-default .navbar-nav > .active > a,
+.navbar-default .navbar-nav > .active > a:hover,
+.navbar-default .navbar-nav > .active > a:focus {
+    background-color: #2b50c0;
+    color: #c4ccf4;
+}
+
+.navbar-default .navbar-nav > .open > a,
+.navbar-default .navbar-nav > .open > a:hover,
+.navbar-default .navbar-nav > .open > a:focus {
+    background-color: #2b50c0;
+    color: #c4ccf4;
+}
+
+.navbar-default .navbar-toggle { border-color: #2b50c0; }
+
+.navbar-default .navbar-toggle:hover,
+.navbar-default .navbar-toggle:focus { background-color: #2b50c0; }
+
+.navbar-default .navbar-toggle .icon-bar { background-color: #e4edf0; }
+
+.navbar-default .navbar-collapse,
+.navbar-default .navbar-form { border-color: #e4edf0; }
+
+.navbar-default .navbar-link { color: #e4edf0; }
+
+.navbar-default .navbar-link:hover { color: #c4ccf4; }
+
+@media (max-width: 767px) {
+    .navbar-default .navbar-nav .open .dropdown-menu > li > a { color: #e4edf0; }
+
+    .navbar-default .navbar-nav .open .dropdown-menu > li > a:hover,
+    .navbar-default .navbar-nav .open .dropdown-menu > li > a:focus { color: #c4ccf4; }
+
+    .navbar-default .navbar-nav .open .dropdown-menu > .active > a,
+    .navbar-default .navbar-nav .open .dropdown-menu > .active > a:hover,
+    .navbar-default .navbar-nav .open .dropdown-menu > .active > a:focus {
+        background-color: #2b50c0;
+        color: #c4ccf4;
+    }
+}
+
+.slideanim { visibility: hidden; }
+
+.slide {
+    /* The duration of the animation */
+    -moz-animation-duration: 1s;
+    /* The name of the animation */
+    -moz-animation-name: slide;
+    -o-animation-duration: 1s;
+    -o-animation-name: slide;
+    -webkit-animation-duration: 1s;
+    -webkit-animation-name: slide;
+    animation-duration: 1s;
+    animation-name: slide;
+    /* Make the element visible */
+    visibility: visible;
+}
+
+/* Go from 0% to 100% opacity (see-through) and specify the percentage from when to slide in the element along the Y-axis */
+
+@-moz-keyframes slide {
+    0% {
+        -moz-transform: translateY(70%);
+        -ms-transform: translateY(70%);
+        -o-transform: translateY(70%);
+        -webkit-transform: translateY(70%);
+        opacity: 0;
+        transform: translateY(70%);
+    }
+
+    100% {
+        -moz-transform: translateY(0%);
+        -ms-transform: translateY(0%);
+        -o-transform: translateY(0%);
+        -webkit-transform: translateY(0%);
+        opacity: 1;
+        transform: translateY(0%);
+    }
+}
+
+@keyframes slide {
+    0% {
+        -moz-transform: translateY(70%);
+        -ms-transform: translateY(70%);
+        -o-transform: translateY(70%);
+        -webkit-transform: translateY(70%);
+        opacity: 0;
+        transform: translateY(70%);
+    }
+
+    100% {
+        -moz-transform: translateY(0%);
+        -ms-transform: translateY(0%);
+        -o-transform: translateY(0%);
+        -webkit-transform: translateY(0%);
+        opacity: 1;
+        transform: translateY(0%);
+    }
+}
+
+@-webkit-keyframes slide {
+    0% {
+        -moz-transform: translateY(70%);
+        -ms-transform: translateY(70%);
+        -o-transform: translateY(70%);
+        -webkit-transform: translateY(70%);
+        opacity: 0;
+        transform: translateY(70%);
+    }
+
+    100% {
+        -moz-transform: translateY(0%);
+        -ms-transform: translateY(0%);
+        -o-transform: translateY(0%);
+        -webkit-transform: translateY(0%);
+        opacity: 1;
+        transform: translateY(0%);
+    }
+}

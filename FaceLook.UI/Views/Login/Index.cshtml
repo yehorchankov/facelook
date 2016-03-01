@@ -1,0 +1,58 @@
+﻿@model FaceLook.UI.Models.LoginViewModel
+
+@{
+    ViewBag.Title = "Welcome";
+    Layout = "~/Views/Shared/_LoginLayout.cshtml";
+}
+
+<link href="~/Content/Login.min.css" rel="stylesheet"/>
+
+<div class="container">
+    <div class="row">
+        <div class="modal fade" id="modal-container-764577" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                            <span class="glyphicon glyphicon-remove"></span>
+                        </button>
+                        <h4 class="modal-title" id="myModalLabel">
+                            Welcome
+                        </h4>
+                    </div>
+                    @using (Html.BeginForm("Index", "Login", FormMethod.Post,
+                        new {@class = "form-horizontal", role = "form"}))
+                    {
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">
+                                    LOGIN
+                                </label>
+                                <div class="col-sm-10">
+                                    @Html.TextBoxFor(m => m.Login, new {@class = "form-control"})
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">
+                                    PASSWORD
+                                </label>
+                                <div class="col-sm-10">
+                                    @Html.TextBoxFor(m => m.Password, new {type = "password", @class = "form-control"})
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="reset" class="btn btn-default" data-dismiss="modal">
+                                Close
+                            </button>
+                            <button type="submit" class="btn btn-primary">
+                                Sign in
+                            </button>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

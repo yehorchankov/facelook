@@ -1,0 +1,63 @@
+﻿@model IEnumerable<FaceLook.DAL.Entities.User>
+@{
+    ViewBag.Title = "My friends";
+}
+
+<div class="container">
+    @if (Model == null)
+    {
+        <h3 class="text-center" style="margin: 30px">You have no friends yet</h3>
+    }
+    else
+    {
+        <h3 class="text-center" style="margin: 30px">Your friends</h3>
+        foreach (var user in Model)
+        {
+            <div class="row well">
+                <div class="col-sm-3">
+                    <h4>
+                        <a href="@Url.RouteUrl("PageItselfRoute", new {login = user.NickName})">
+                            @user.FirstName @user.LastName
+                        </a>
+                    </h4>
+                </div>
+                <div class="col-sm-3">
+                    @if (user.Photo != null)
+                    {
+                        <div>
+                            <a href="@Url.RouteUrl("PageItselfRoute", new {login = user.NickName})">
+                                <img class="img-circle" alt="@user.FirstName" width="80" height="80" src="@Url.Action("GetImage", "Account",
+                                                                                                              new {login = user.NickName})"/>
+                            </a>
+                        </div>
+                    }
+                    else
+                    {
+                        <div>
+                            <a href="@Url.RouteUrl("PageItselfRoute", new {login = user.NickName})">
+                                <img class="img-circle" alt="@user.FirstName" width="80" height="80" src="~/Content/Photos/default.jpg"/>
+                            </a>
+                        </div>
+                    }
+                </div>
+                <div class="col-sm-3">
+                    tel: @user.Phone
+                    <br/>
+                    email: @user.Email
+                </div>
+
+                <div class="col-sm-3">
+                    @Html.RouteLink("User's friends", "FriendsRoute", new { login = user.NickName }, new { @class = "btn btn-info" })
+
+                    @using (Html.BeginForm("Remove", "Friends", FormMethod.Post))
+                    {
+                        <input type="hidden" value="@user.NickName" name="login" id="login"/>
+                        <input type="submit" class="btn btn-warning" value="Remove from friends"/>
+                    }
+
+                    @Html.RouteLink("Write a message", "ConversationRoute", new { login = user.NickName }, new { @class = "btn btn-success" })
+                </div>
+            </div>
+        }
+    }
+</div>

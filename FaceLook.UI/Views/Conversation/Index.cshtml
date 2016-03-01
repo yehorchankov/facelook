@@ -1,0 +1,146 @@
+﻿@model FaceLook.UI.Models.MessageViewModel
+
+@{
+    ViewBag.Title = "Messages to " + Model.ReceiverLogin;
+    int counter = 0;
+    string cssClass = "row";
+}
+
+<script src="~/Scripts/formCleaner.js"></script>
+<script>
+    $(window).scroll(function() {
+        $(".slideanim").each(function() {
+            var pos = $(this).offset().top;
+
+            var winTop = $(window).scrollTop();
+            if (pos < winTop + 600) {
+                $(this).addClass("slide");
+            }
+        });
+    });
+</script>
+
+
+<div class="container" style="background-color: #faffff; margin-top: 30px">
+    @foreach (var msg in Model.Messages)
+    {
+        {
+            counter++;
+        }
+        if (counter > 3)
+        {
+            cssClass += " slideanim";
+        }
+
+        <!--Message-->
+        <div class="@cssClass">
+            @if (msg.Sender.NickName == User.Identity.Name)
+            {
+                <div class="col-sm-5 col-sm-offset-6">
+                    <div class="row well well-sm">
+                        <div class="col-sm-3">
+                            @if (Url.Action("GetImage", "Account", new {login = User.Identity.Name}) != null)
+                            {
+                                <a href="@Url.RouteUrl("PageItselfRoute", new {login = User.Identity.Name})">
+                                    <img class="img-circle" alt="@User.Identity.Name" width="80" height="80" src="@Url.Action("GetImage", "Account", new {login = User.Identity.Name})"/>
+                                </a>
+                            }
+                            else
+                            {
+                                <a href="@Url.RouteUrl("PageItselfRoute", new {login = User.Identity.Name})">
+                                    <img class="img-circle" alt="@User.Identity.Name" width="80" height="80" src="~/Content/Photos/default.jpg"/>
+                                </a>
+                            }
+                        </div>
+                        <div class="col-sm-9">
+                            <h4>
+                                <a href="@Url.RouteUrl("PageItselfRoute", new {login = msg.Sender.NickName})">
+                                    @msg.Sender.FirstName @msg.Sender.LastName
+                                </a>
+                            </h4>
+                            <p style="font-size: 1.2em">
+                                @msg.Text
+                            </p>
+                            <div class="text-muted">
+                                @msg.TimeSent.ToShortDateString() at @msg.TimeSent.ToLongTimeString()
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            }
+            else
+            {
+                <div class="col-sm-offset-1 col-sm-5">
+                    <div class="row well well-sm">
+                        <div class="col-sm-9">
+                            <h4>
+                                <a href="@Url.RouteUrl("PageItselfRoute", new {login = msg.Sender.NickName})">
+                                    @msg.Sender.FirstName @msg.Sender.LastName
+                                </a>
+                            </h4>
+                            <p style="font-size: 1.3em">
+                                @msg.Text
+                            </p>
+                            <div class="text-muted">
+                                @msg.TimeSent.ToShortDateString() at @msg.TimeSent.ToLongTimeString()
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            @if (Url.Action("GetImage", "Account", new {login = msg.Sender.NickName}) != null)
+                            {
+                                <a href="@Url.RouteUrl("PageItselfRoute", new {login = msg.Sender.NickName})">
+                                    <img class="img-circle" alt="@msg.Sender.NickName" width="80" height="80" src="@Url.Action("GetImage", "Account", new {login = msg.Sender.NickName})"/>
+                                </a>
+                            }
+                            else
+                            {
+                                <a href="@Url.RouteUrl("PageItselfRoute", new {login = msg.Sender.NickName})">
+                                    <img class="img-circle" alt="@msg.Sender.NickName" width="80" height="80" src="~/Content/Photos/default.jpg"/>
+                                </a>
+                            }
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+
+    <div class="row" style="margin-top: 20px">
+        <div class="col-md-10 col-md-offset-1 text-muted text-center">
+            <hr/>
+            The conversation created
+        </div>
+    </div>
+
+    @section NavbarBottom {
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-12">
+                    <nav class="navbar navbar-default navbar-fixed-bottom" role="navigation">
+                        @using (Html.BeginForm("Index", "Conversation", FormMethod.Post))
+                        {
+                            @Html.HiddenFor(m => m.ReceiverLogin)
+                            <div class="form-horizontal">
+                                <div class="navbar-form form-group">
+                                    <div class="col-sm-8 col-sm-offset-2">
+                                        @Html.TextAreaFor(m => m.Message.Text, new
+                                        {
+                                            placeholder = "Your message",
+                                            @class = "form-control",
+                                            style = "-moz-min-width:100%;-ms-min-width:100%;-o-min-width:100%;-webkit-min-width:100%;margin:3px;min-width:100%;"
+                                        })
+                                        <div class="pull-right">
+                                            <input type="submit" value="Send" class="btn btn-info"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </nav>
+                </div>
+            </div>
+        </div>
+    }
+
+</div>

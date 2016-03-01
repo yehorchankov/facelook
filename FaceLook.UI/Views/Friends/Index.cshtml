@@ -1,0 +1,89 @@
+﻿@model FaceLook.UI.Models.UserViewModel
+
+@{
+    ViewBag.Title = "Friends";
+}
+
+
+<div class="container">
+    @if (Model.User.Friends == null)
+    {
+        <h3 class="text-center">@Model.User.FirstName has no friends </h3>
+    }
+    else
+    {
+        <h3>@Model.User.FirstName's friends </h3>
+        foreach (var user in Model.User.Friends)
+        {
+            <div class="row well">
+                <div class="col-sm-3">
+                    <h4>
+                        <a href="@Url.RouteUrl("PageItselfRoute", new {login = user.NickName})">
+                            @user.FirstName @user.LastName
+                        </a>
+                    </h4>
+                </div>
+                <div class="col-sm-3">
+                    @if (user.Photo != null)
+                    {
+                        <div>
+                            <a href="@Url.RouteUrl("PageItselfRoute", new {login = user.NickName})">
+                                <img class="img-circle" alt="@user.FirstName" width="80" height="80" src="@Url.Action("GetImage", "Account",
+                                                                                                              new {login = user.NickName})"/>
+                            </a>
+                        </div>
+                    }
+                    else
+                    {
+                        <div>
+                            <a href="@Url.RouteUrl("PageItselfRoute", new {login = user.NickName})">
+                                <img class="img-circle" alt="@user.FirstName" width="80" height="80" src="~/Content/Photos/default.jpg"/>
+                            </a>
+                        </div>
+                    }
+                </div>
+                <div class="col-sm-3">
+                    tel: @user.Phone
+                    <br/>
+                    email: @user.Email
+                </div>
+
+                <div class="col-sm-3">
+                    @Html.RouteLink(user.FirstName + "'s friends", "FriendsRoute", new {login = user.NickName}, new { @class = "btn btn-info"})
+
+                    @if (Model.CurrentUser.Friends.Contains(Model.User))
+                    {
+                        using (Html.BeginForm("Remove", "Friends", FormMethod.Post))
+                        {
+                            <input type="hidden" value="@user.NickName" name="login" id="login"/>
+                            <input type="submit" class="btn btn-warning" value="Remove from friends"/>
+                        }
+                    }
+                    @if (Model.CurrentUser.FriendsToConfirm.Any(f => f.Login == Model.User.NickName))
+                    {
+                        using (Html.BeginForm("Confirm", "Friends", FormMethod.Post))
+                        {
+                            <input type="hidden" value="@user.NickName" name="login" id="login"/>
+                            <input type="submit" class="btn btn-success" value="Confirm friendship"/>
+                        }
+                        using (Html.BeginForm("Deny", "Friends", FormMethod.Post))
+                        {
+                            <input type="hidden" value="@user.NickName" name="login" id="login"/>
+                            <input type="submit" class="btn btn-warning" value="Deny friendship"/>
+                        }
+                    }
+                    @if (!Model.CurrentUser.Friends.Contains(Model.User))
+                    {
+                        using (Html.BeginForm("Add", "Friends", FormMethod.Post))
+                        {
+                            <input type="hidden" value="@user.NickName" name="login" id="login"/>
+                            <input type="submit" class="btn btn-success" value="Add to friends"/>
+                        }
+                    }
+
+                    @Html.RouteLink("Write a message", "ConversationRoute", new { login = user.NickName }, new { @class = "btn btn-success" })
+                </div>
+            </div>
+        }
+    }
+</div>

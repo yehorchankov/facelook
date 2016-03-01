@@ -1,0 +1,117 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width"/>
+    <title>@ViewBag.Title</title>
+    <script src="~/Scripts/jquery-2.2.0.min.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+    <link href="~/Content/Site.css" rel="stylesheet"/>
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+    <script type="text/javascript">
+        $(function() {
+            $('#bookmarkme').click(function() {
+                if (window.sidebar && window.sidebar.addPanel) { // Mozilla Firefox Bookmark
+                    window.sidebar.addPanel(document.title, window.location.href, '');
+                } else if (window.external && ('AddFavorite' in window.external)) { // IE Favorite
+                    window.external.AddFavorite(location.href, document.title);
+                } else if (window.opera && window.print) { // Opera Hotlist
+                    this.title = document.title;
+                    return true;
+                } else { // webkit - safari/chrome
+                    alert('Press ' + (navigator.userAgent.toLowerCase().indexOf('mac') != -1 ? 'Command/Cmd' : 'CTRL') + ' + D to bookmark this page.');
+                }
+            });
+        });
+    </script>
+
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+                <div class="navbar-header">
+                    <a class="navbar-brand" title="Add to bookmarks" href="#" id="bookmarkme">
+                        facelook <span class="glyphicon glyphicon-star"></span>
+                    </a>
+                </div>
+
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav">
+                        <li>
+                            <a href="@Url.RouteUrl("PageItselfRoute", new {login = User.Identity.Name})">Page</a>
+                        </li>
+                        <li>
+                            @Html.ActionLink("Messages", "List", "Conversation")
+                        </li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Friends<strong class="caret"></strong></a>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    @Html.ActionLink("My friends", "Index", "Friends")
+                                </li>
+                                <li>
+                                    @Html.RouteLink("Requests", "FriendsRequestRoute")
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                    @using (Html.BeginForm("Index", "Search", FormMethod.Post,
+                        new {@class = "navbar-form navbar-left", role = "search"}))
+                    {
+                        <div class="form-group">
+                            @Html.TextBox("search", null, new {placeholder = "search"})
+                        </div>
+                        <button type="submit" class="btn btn-success">
+                            <span class="glyphicon glyphicon-search"></span>
+                        </button>
+                    }
+                    <ul class="nav navbar-nav navbar-right">
+                        <li>
+                            @Html.ActionLink("Sign out", "SignOut", "Account")
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </div>
+    </div>
+</div>
+
+@if (TempData["message"] != null)
+{
+    <div class="alert alert-success fade in">
+        <a href="#" class="close" data-dismiss="alert">
+            &times;
+        </a>
+        @TempData["message"]
+    </div>
+}
+@if (TempData["errorMessage"] != null)
+{
+    <div class="alert alert-danger fade in">
+        <a href="#" class="close" data-dismiss="alert">
+            &times;
+        </a>
+        @TempData["errorMessage"]
+    </div>
+}
+
+<div class="container body-content">
+    @RenderBody()
+    @if (!((string) ViewBag.Title).StartsWith("Messages to "))
+    {
+        <hr/>
+        <footer>
+            <p class="text-center">&copy; @DateTime.Now.Year - Facelook</p>
+        </footer>
+    }
+</div>
+
+@RenderSection("NavbarBottom", false)
+
+</body>
+</html>

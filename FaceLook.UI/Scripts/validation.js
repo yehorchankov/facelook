@@ -1,0 +1,2 @@
+﻿
+function validateForm(){jQuery.validator.addMethod("password_check",function(){var n=$("#Password").val(),t=$("#PasswordToCmp").val();return n==t?!0:!1},"Passwords do not match");$("#RegistrationForm").validate({rules:{Password:"required",PasswordToCmp:"password_check"},submitHandler:function(n){n.submit()}})}
