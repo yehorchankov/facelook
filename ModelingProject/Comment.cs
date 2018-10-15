@@ -6,10 +6,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 
-namespace FaceLook.DAL.Entities
-{
-    public class Comment
-    {
+namespace FaceLook.DAL.Entities {
+    public class Comment {
         [HiddenInput(DisplayValue = false)]
         public int Id { get; set; }
 
