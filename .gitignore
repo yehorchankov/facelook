@@ -17,6 +17,7 @@ bld/
 [Oo]bj/
 target/
 log/
+logs/
 
 # Roslyn cache directories
 *.ide/
